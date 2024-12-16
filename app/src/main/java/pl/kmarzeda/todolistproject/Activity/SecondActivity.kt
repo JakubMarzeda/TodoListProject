@@ -1,21 +1,31 @@
 package pl.kmarzeda.todolistproject.Activity
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import pl.kmarzeda.todolistproject.R
+import pl.kmarzeda.todolistproject.Class.Person
+import pl.kmarzeda.todolistproject.Class.PersonAdapter
 
 class SecondActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_second)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val sharedPreferences = getSharedPreferences("personData", MODE_PRIVATE)
+        val personList = PersonAdapter.getPersonList(sharedPreferences).toMutableList()
+
+        val adapter = PersonAdapter(personList) { person ->
+            personList.remove(person)
+            PersonAdapter.savePersonList(sharedPreferences, personList)
+            recyclerView.adapter?.notifyDataSetChanged()
         }
+
+        recyclerView.adapter = adapter
     }
 }

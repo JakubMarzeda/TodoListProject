@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "pl.kmarzeda.todolistproject"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "pl.kmarzeda.todolistproject"
@@ -45,4 +45,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.gson)
 }
